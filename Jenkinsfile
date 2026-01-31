@@ -5,10 +5,6 @@ pipeline {
         DOCKER_IMAGE = "yogeshrajendran/todo-webapp:${BUILD_NUMBER}"
     }
 
-    tools {
-        sonarQubeScanner 'sonar-scanner'
-    }
-
     stages {
 
         stage('Checkout') {
@@ -26,8 +22,15 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('SonarQube') {
-                    sh 'sonar-scanner'
+                script {
+                    def scannerHome = tool 'sonar-scanner'
+                    withSonarQubeEnv('SonarQube') {
+                        sh """
+                        ${scannerHome}/bin/sonar-scanner \
+                        -Dsonar.projectKey=todo-app \
+                        -Dsonar.sources=. 
+                        """
+                    }
                 }
             }
         }
