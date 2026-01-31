@@ -8,10 +8,12 @@ pipeline {
     stages {
 
         stage('Checkout') {
-            steps {
-                git 'https://github.com/yogeshrajendran-24/todo-webapp.git'
+    steps {
+        git branch: 'main',
+                url: 'https://github.com/yogeshrajendran-24/todo-webapp.git'
             }
         }
+
 
         stage('Test') {
             steps {
